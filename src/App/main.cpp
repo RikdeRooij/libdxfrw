@@ -68,16 +68,12 @@ int main(int argc, char *argv[])
 {
     bool badState = false;
     std::string outName;
-    //if (argc != 2) {
-    //    usage();
-    //    return 1;
-    //}
+    if (argc != 2) {
+        usage();
+        return 1;
+    }
 
-    //std::string fileName = argv[1];
-
-    std::string fileName = "D:\\Projects\\_DXF\\libdxfrw-master\\bin\\130181_Layout_Extend.dwg";
-    //std::string fileName = "D:\\Projects\\_DXF\\libdxfrw-master\\bin\\140280_Lay-out_Extend.dwg";
-    //std::string fileName = "D:\\Projects\\_DXF\\libdxfrw-master\\bin\\140360-00 Lay-out Rev.C.dwg";
+    std::string fileName = argv[1];
 
     if (badState)
     {
