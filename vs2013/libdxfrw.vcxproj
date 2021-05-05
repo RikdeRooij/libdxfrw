@@ -13,18 +13,19 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{357A8016-9AD4-47EF-B23C-2071C264793B}</ProjectGuid>
     <RootNamespace>libdxfrw</RootNamespace>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v140</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v140</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
@@ -38,16 +39,27 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <IncludePath>libiconv-1.16\libcharset\include;libiconv-1.16\include;libiconv-1.16;D:\Projects\_DXF\libdxfrw-master\libiconv_win\libiconv-1.16\libcharset\include;D:\Projects\_DXF\libdxfrw-master\libiconv_win\libiconv-1.16\include;D:\Projects\_DXF\libdxfrw-master\libiconv_win\libiconv-1.16;D:\Projects\_DXF\libdxfrw-master\libiconv_win\include;$(IncludePath)</IncludePath>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\libiconv_win\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>..\libiconv_win\lib\</AdditionalLibraryDirectories>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <Lib>
+      <AdditionalDependencies>libiconvStatic.lib</AdditionalDependencies>
+    </Lib>
+    <Lib>
+      <AdditionalLibraryDirectories>D:\Projects\_DXF\libdxfrw-master\libiconv_win\lib;$(ProjectDir)..\vs2013\packages\libiconv.1.14.0.11\build\native\lib\v110\Win32\Release\static\cdecl</AdditionalLibraryDirectories>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -64,6 +76,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\src\App\dx_data.h" />
+    <ClInclude Include="..\src\App\dx_iface.h" />
+    <ClInclude Include="..\src\App\write_svg.h" />
     <ClInclude Include="..\src\drw_base.h" />
     <ClInclude Include="..\src\drw_classes.h" />
     <ClInclude Include="..\src\drw_entities.h" />
@@ -93,6 +108,9 @@
     <ClInclude Include="..\src\main_doc.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\src\App\dx_iface.cpp" />
+    <ClCompile Include="..\src\App\main.cpp" />
+    <ClCompile Include="..\src\App\write_svg.cpp" />
     <ClCompile Include="..\src\drw_classes.cpp" />
     <ClCompile Include="..\src\drw_entities.cpp" />
     <ClCompile Include="..\src\drw_header.cpp" />

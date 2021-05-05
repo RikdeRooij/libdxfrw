@@ -732,13 +732,16 @@ bool dwgReader::readDwgBlocks(DRW_Interface& intfa, dwgBuffer *dbuf){
     std::map<duint32, objHandle>::iterator mit;
     DRW_DBG("\nobject map total size= "); DRW_DBG(ObjectMap.size());
 
+    int progress = blockRecordmap.size();
     for (std::map<duint32, DRW_Block_Record*>::iterator it=blockRecordmap.begin(); it != blockRecordmap.end(); ++it){
+        progress--;
         DRW_Block_Record* bkr= it->second;
         DRW_DBG("\nParsing Block, record handle= "); DRW_DBGH(it->first); DRW_DBG(" Name= "); DRW_DBG(bkr->name); DRW_DBG("\n");
         DRW_DBG("\nFinding Block, handle= "); DRW_DBGH(bkr->block); DRW_DBG("\n");
         mit = ObjectMap.find(bkr->block);
         if (mit==ObjectMap.end()) {
             DRW_DBG("\nWARNING: block entity not found\n");
+            std::cout << "WARNING: block entity not found " << bkr->block << std::endl;
             ret = false;
             continue;
         }
@@ -747,6 +750,7 @@ bool dwgReader::readDwgBlocks(DRW_Interface& intfa, dwgBuffer *dbuf){
         DRW_DBG("Block Handle= "); DRW_DBGH(oc.handle); DRW_DBG(" Location: "); DRW_DBG(oc.loc); DRW_DBG("\n");
         if ( !(dbuf->setPosition(oc.loc)) ){
             DRW_DBG("Bad Location reading blocks\n");
+            std::cout << "Bad Location reading blocks" << std::endl;
             ret = false;
             continue;
         }
@@ -784,6 +788,7 @@ bool dwgReader::readDwgBlocks(DRW_Interface& intfa, dwgBuffer *dbuf){
                     if (mit==ObjectMap.end()) {
                         nextH = bkr->lastEH;//end while if entity not foud
                         DRW_DBG("\nWARNING: Entity of block not found\n");
+                        std::cout << "WARNING: Entity of block not found" << std::endl;
                         ret = false;
                         continue;
                     } else {//foud entity reads it
@@ -803,6 +808,7 @@ bool dwgReader::readDwgBlocks(DRW_Interface& intfa, dwgBuffer *dbuf){
                     mit = ObjectMap.find(nextH);
                     if (mit==ObjectMap.end()) {
                         DRW_DBG("\nWARNING: Entity of block not found\n");
+                        std::cout << "WARNING: Entity of block not found" << std::endl;
                         ret = false;
                         continue;
                     } else {//foud entity reads it
@@ -967,6 +973,7 @@ bool dwgReader::readDwgEntity(dwgBuffer *dbuf, objHandle& obj, DRW_Interface& in
         //verify if position is ok:
         if (!dbuf->isGood()){
             DRW_DBG(" Warning: readDwgEntity, bad location\n");
+            std::cout << " Warning: readDwgEntity, bad location" << std::endl;
             return false;
         }
         int size = dbuf->getModularShort();
@@ -978,6 +985,7 @@ bool dwgReader::readDwgEntity(dwgBuffer *dbuf, objHandle& obj, DRW_Interface& in
         //verify if getBytes is ok:
         if (!dbuf->isGood()){
             DRW_DBG(" Warning: readDwgEntity, bad size\n");
+            std::cout << " Warning: readDwgEntity, bad size" << std::endl;
             delete[]tmpByteStr;
             return false;
         }
@@ -1162,7 +1170,8 @@ bool dwgReader::readDwgEntity(dwgBuffer *dbuf, objHandle& obj, DRW_Interface& in
             break;
         }
         if (!ret){
-            DRW_DBG("Warning: Entity type "); DRW_DBG(oType);DRW_DBG("has failed, handle: "); DRW_DBG(obj.handle); DRW_DBG("\n");
+            DRW_DBG("Warning: Entity type "); DRW_DBG(oType); DRW_DBG("has failed, handle: "); DRW_DBG(obj.handle); DRW_DBG("\n");
+            std::cout << " Warning: Entity type " << oType << " has failed, handle: " << obj.handle << std::endl;
         }
         delete[]tmpByteStr;
     return ret;
