@@ -19,14 +19,14 @@ const double strokeWidth = 0.1;
 
 bool ignoreLayer(std::string layerName)
 {
-    //return false;
-    if (layerName.find("0") != std::string::npos)
-        return false;
-    if (layerName.find("Komponenten") != std::string::npos)
-        return false;
-    if (layerName.find("Hoofdlijn") != std::string::npos)
-        return false;
-    return true;
+    return false;
+    //if (layerName.find("0") != std::string::npos)
+    //    return false;
+    //if (layerName.find("Komponenten") != std::string::npos)
+    //    return false;
+    //if (layerName.find("Hoofdlijn") != std::string::npos)
+    //    return false;
+    //return true;
 }
 
 const char* va(const char* pFormat, ...)
