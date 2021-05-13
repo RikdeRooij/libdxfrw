@@ -66,25 +66,15 @@ bool extractText(std::string inName)
 
 int main(int argc, char *argv[])
 {
-    bool badState = false;
-    std::string outName;
-    if (argc != 2) {
+    std::string fileName;
+
+    if (argc != 2)
         usage();
-        return 1;
-    }
+    else
+        fileName = argv[1];
 
-    std::string fileName = argv[1];
-
-    if (badState)
-    {
-        std::cout << "Bad options." << std::endl;
-        usage();
-        return 1;
-    }
-
-    bool ok = extractText(fileName);
+    bool ok = fileName.length() > 0 ? extractText(fileName) : false;
     if (ok)
         return 0;
-    else
-        return 1;
+    return 1;
 }
