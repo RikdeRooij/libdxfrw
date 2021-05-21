@@ -30,38 +30,51 @@ void usage()
 
 bool extractText(std::string inName)
 {
-    bool badState = false;
     //verify if input file exist
     std::ifstream ifs;
     ifs.open(inName.c_str(), std::ifstream::in);
-    badState = ifs.fail();
+    auto badState = ifs.fail();
     ifs.close();
     if (badState)
     {
         std::cout << "Error can't open " << inName << std::endl;
-        //return false;
+        return false;
     }
 
-    std::ofstream out("rik_out.txt");
+	bool ok = false;
+	std::string outFileName = inName.c_str();
+	int ext = outFileName.find_last_of('.');
+	if (ext > 0) outFileName = outFileName.substr(0, ext);
+
+
+#ifdef DEBUG
+    std::ofstream out = std::ofstream((outFileName + ".txt"));
     std::streambuf *coutbuf = std::cout.rdbuf(); //save old buf
     std::cout.rdbuf(out.rdbuf()); //redirect std::cout to out.txt!
+#endif
 
     dx_data fData;
     dx_iface *input = new dx_iface();
-    badState = input->printText(inName, &fData);
+#ifdef DEBUG
+	ok = input->printText(inName, &fData);
+#else
+	ok = input->openRead(inName, &fData);
+#endif
 
+#ifdef DEBUG
     std::cout.rdbuf(coutbuf); //reset to standard output again
     out.close();
+#endif
 
-    extractSvg(input);
 
-    if (!badState)
-    {
+	//if (ok)
+		extractSvg(input, outFileName.c_str());
+
+    if (!ok)
         std::cout << "Error reading file " << inName << std::endl;
-    }
-    delete input;
 
-    return badState;
+    delete input;
+    return ok;
 }
 
 int main(int argc, char *argv[])
@@ -73,7 +86,15 @@ int main(int argc, char *argv[])
     else
         fileName = argv[1];
 
-    bool ok = fileName.length() > 0 ? extractText(fileName) : false;
+    bool ok = false;
+    if (fileName.length() > 0)
+    {
+        std::cout << "reading " << fileName << std::endl;
+        ok = extractText(fileName);
+    }
+
+	std::cout << "press any key to exit... " << std::endl;
+    std::cin.get();
     if (ok)
         return 0;
     return 1;

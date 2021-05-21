@@ -13,4 +13,4 @@ std::string string_format(const char *fmt, ...);
 
 bool WriteEntity(dx_iface *input, DRW_Entity * e, std::stringstream &svg, const double &s, bool alt);
 
-bool extractSvg(dx_iface *input);
+bool extractSvg(dx_iface *input, const char* outFileName);

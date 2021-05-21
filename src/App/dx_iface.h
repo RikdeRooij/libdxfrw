@@ -23,6 +23,7 @@ public:
     ~dx_iface(){}
     void PrintEntity(DRW_Entity * &e);
     bool printText(const std::string& fileI, dx_data *fData);
+    bool openRead(const std::string& fileI, dx_data *fData);
     void writeEntity(DRW_Entity* e);
 
 //reimplement virtual DRW_Interface functions

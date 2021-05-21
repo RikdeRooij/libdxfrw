@@ -12,7 +12,7 @@
 #include <algorithm>
 
 const double pixelToMillimeterConversionRatio = 3.543299873306695;
-const double strokeWidth = 0.1;
+//const double strokeWidth = 0.01;
 
 //#define ALLBLOCK true
 //#define ALLBLOCK_SPLIT true
@@ -205,7 +205,7 @@ bool WriteEntity(dx_iface *input, DRW_Entity * e, std::stringstream &svg, const 
                 auto trsclstr = string_format("scale(%f, %f)", inser->xscale, inser->yscale);
 
                 svg << " transform=\"" << transstr << " " << trrotstr << " " << trsclstr << "\"";
-                svg << ">";
+                svg << ">\n";
 
                 //svg << "<line " << string_format("x1=\"%f\" y1=\"%f\" x2=\"%f\" y2=\"%f\"",
                 //                                 0 * s, 0 * s,
@@ -724,7 +724,7 @@ bool extractSvgBlock(dx_iface *input, std::stringstream &asvg, const double &s, 
 }
 
 
-bool extractSvg(dx_iface *input)
+bool extractSvg(dx_iface *input, const char* outFileName)
 {
     double mw = 0;
     double mh = 0;
@@ -791,14 +791,14 @@ bool extractSvg(dx_iface *input)
                                    //-bmaxy * s * pixelToMillimeterConversionRatio);
                                     mw * s * pixelToMillimeterConversionRatio,
                                     mh * s * pixelToMillimeterConversionRatio);
-        osvgWH = "width=\"1vp\" height=\"1vp\"";
+        osvgWH = "width=\"1080\" height=\"900\"";
 
         std::stringstream osvg;
         osvg << "<svg " << osvgWH << " version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\"";
         osvg << " font-size=\"5px\"";
         osvg << " transform=\"scale(1, -1)\"";
-        osvg << " style=\"stroke:black; stroke-width:" << strokeWidth << "; "
-            << "stroke-linecap:round; stroke-linejoin:round\"";
+        osvg << " style=\"stroke:black; stroke-width: 0.05; "
+            << "stroke-linecap:round; stroke-linejoin:round; overflow:auto !important;\"";
         osvg
 #if !ALLBLOCK
             << " viewBox=\"" << (extmin->x * ss) << " " << (extmin->y * ss) << " " << ((extmax->x - extmin->x) * ss) << " " << ((extmax->y - extmin->y) * ss) << "\""
@@ -815,7 +815,8 @@ bool extractSvg(dx_iface *input)
             "</svg>\n";
 
         std::stringstream filename;
-        filename << "rik_out_";
+        filename << outFileName;
+        filename << "_";
         filename << cntr;
         filename << ".svg";
 

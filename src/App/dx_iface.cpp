@@ -16,6 +16,37 @@
 #include "../libdwgr.h"
 #include "../libdxfrw.h"
 
+bool dx_iface::openRead(const std::string& fileI, dx_data *fData)
+{
+    unsigned int found = fileI.find_last_of(".");
+    std::string fileExt = fileI.substr(found + 1);
+    std::transform(fileExt.begin(), fileExt.end(), fileExt.begin(), ::toupper);
+    cData = fData;
+    currentBlock = cData->mBlock;
+
+    bool success = false;
+    if (fileExt == "DXF")
+    {
+        //loads dxf
+        dxfRW* dxf = new dxfRW(fileI.c_str());
+       // dxf->setDebug(DRW::DEBUG);
+        success = dxf->read(this, false);
+        delete dxf;
+    }
+    else if (fileExt == "DWG")
+    {
+        //loads dwg
+        dwgR* dwg = new dwgR(fileI.c_str());
+       // dwg->setDebug(DRW::DEBUG);
+        success = dwg->read(this, false);
+        delete dwg;
+    }
+
+    return success;
+}
+
+
+
 #define PID(e) " hid:" << static_cast<DRW_Entity*>(e)->handle << " pid:" << static_cast<DRW_Entity*>(e)->parentHandle <<  " lyr:" << static_cast<DRW_Entity*>(e)->layer
 
 void dx_iface::PrintEntity(DRW_Entity * &e)
@@ -80,29 +111,7 @@ void dx_iface::PrintEntity(DRW_Entity * &e)
 
 bool dx_iface::printText(const std::string& fileI, dx_data *fData)
 {
-    unsigned int found = fileI.find_last_of(".");
-    std::string fileExt = fileI.substr(found + 1);
-    std::transform(fileExt.begin(), fileExt.end(), fileExt.begin(), ::toupper);
-    cData = fData;
-    currentBlock = cData->mBlock;
-
-    bool success = false;
-    if (fileExt == "DXF")
-    {
-        //loads dxf
-        dxfRW* dxf = new dxfRW(fileI.c_str());
-       // dxf->setDebug(DRW::DEBUG);
-        success = dxf->read(this, false);
-        delete dxf;
-    }
-    else if (fileExt == "DWG")
-    {
-        //loads dwg
-        dwgR* dwg = new dwgR(fileI.c_str());
-       // dwg->setDebug(DRW::DEBUG);
-        success = dwg->read(this, false);
-        delete dwg;
-    }
+	bool success = openRead(fileI, fData);
 
     if (success || true)
     {

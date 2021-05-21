@@ -41,6 +41,10 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <IncludePath>libiconv-1.16\libcharset\include;libiconv-1.16\include;libiconv-1.16;D:\Projects\_DXF\libdxfrw-master\libiconv_win\libiconv-1.16\libcharset\include;D:\Projects\_DXF\libdxfrw-master\libiconv_win\libiconv-1.16\include;D:\Projects\_DXF\libdxfrw-master\libiconv_win\libiconv-1.16;D:\Projects\_DXF\libdxfrw-master\libiconv_win\include;$(IncludePath)</IncludePath>
+    <OutDir>$(SolutionDir)..\bin\$(Configuration)\</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>$(SolutionDir)..\bin\$(Configuration)\</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
